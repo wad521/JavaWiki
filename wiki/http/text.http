@@ -7,7 +7,7 @@ client.test("test-hello", function() {
   client.log(response.body);
   client.log(JSON.stringify(response.body)); // 虽然idea没有提示JSON，但是可以用
   client.assert(response.status === 200, "返回码不是200");
-  client.assert(response.body === "hello  yxl yyds   !!!", "结果验证失败");
+  //client.assert(response.body === "hello  yxl yyds   !!!", "结果验证失败");
 });
 %}
 ###
