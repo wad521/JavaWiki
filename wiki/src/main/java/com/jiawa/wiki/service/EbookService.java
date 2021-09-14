@@ -5,11 +5,10 @@ import com.jiawa.wiki.domain.EbookExample;
 import com.jiawa.wiki.mapper.EbookMapper;
 import com.jiawa.wiki.req.EbookReq;
 import com.jiawa.wiki.resp.EbookResp;
-import org.springframework.beans.BeanUtils;
+import com.jiawa.wiki.util.CopyUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,19 +22,27 @@ public class EbookService {
     private EbookMapper ebookMapper;
 
     public List<EbookResp> list(EbookReq req){
-
+        //mybatis逆向的类
         EbookExample ebookExample = new EbookExample();
+        //  .Criteria 可以看做一个where条件
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         criteria.andNameLike("%"+req.getName()+"%");
         List<Ebook> ebookslist = ebookMapper.selectByExample(ebookExample);
 
-        List<EbookResp> respList = new ArrayList<>();
-        for (Ebook ebook : ebookslist) {
-            EbookResp ebookResp = new EbookResp();
-            //BeanUtils用法   复制对象
-            BeanUtils.copyProperties(ebook,ebookResp);
-            respList.add(ebookResp);
-        }
-        return respList;
+        //链表复制
+//        List<EbookResp> respList = new ArrayList<>();
+//        for (Ebook ebook : ebookslist) {
+////            EbookResp ebookResp = new EbookResp();
+////            //BeanUtils用法   复制对象
+////            BeanUtils.copyProperties(ebook,ebookResp);
+//
+//            //使用CopyUtil进行单体复制
+//            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
+//            respList.add(ebookResp);
+//        }
+
+        //使用CopyUtil进行列表复制
+        List<EbookResp> list = CopyUtil.copyList(ebookslist, EbookResp.class);
+        return list;
     }
 }
