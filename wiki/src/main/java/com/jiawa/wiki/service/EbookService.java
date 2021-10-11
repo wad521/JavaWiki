@@ -7,6 +7,7 @@ import com.jiawa.wiki.req.EbookReq;
 import com.jiawa.wiki.resp.EbookResp;
 import com.jiawa.wiki.util.CopyUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,7 +27,9 @@ public class EbookService {
         EbookExample ebookExample = new EbookExample();
         //  .Criteria 可以看做一个where条件
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%"+req.getName()+"%");
+        if (!ObjectUtils.isEmpty(req.getName())) {
+            criteria.andNameLike("%" + req.getName() + "%");
+        }
         List<Ebook> ebookslist = ebookMapper.selectByExample(ebookExample);
 
         //链表复制
