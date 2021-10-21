@@ -6,5 +6,23 @@ GET http://localhost:8880/ebook/all
 
 ###
 
+POST http://localhost:8880/ebook/save
+Content-Type: application/json
+
+{
+  "id": 12,
+  "category1Id": 15,
+  "name":"实例书籍http"
+}
+
+###
+
+POST http://localhost:8880/ebook/save
+Content-Type: application/x-www-form-urlencoded
+
+id=1&name=Spring Boot 入门教程&category1Id=15&description=零基础入门 Java 开发，企业级应用开发最佳首选框架&cover=/image/cover1.png
+
+###
+
 
 

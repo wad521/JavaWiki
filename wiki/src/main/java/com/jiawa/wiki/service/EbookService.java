@@ -5,8 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.jiawa.wiki.domain.Ebook;
 import com.jiawa.wiki.domain.EbookExample;
 import com.jiawa.wiki.mapper.EbookMapper;
-import com.jiawa.wiki.req.EbookReq;
-import com.jiawa.wiki.resp.EbookResp;
+import com.jiawa.wiki.req.EbookQueryReq;
+import com.jiawa.wiki.req.EbookSaveReq;
+import com.jiawa.wiki.resp.EbookQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.util.CopyUtil;
 import org.slf4j.Logger;
@@ -29,7 +30,11 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public PageResp<EbookResp> list(EbookReq req){
+
+    /*
+     *模糊查询
+     * */
+    public PageResp<EbookQueryResp> list(EbookQueryReq req){
 
         //mybatis逆向的类
         EbookExample ebookExample = new EbookExample();
@@ -62,16 +67,19 @@ public class EbookService {
 //        }
 
         //使用CopyUtil进行列表复制
-        List<EbookResp> list = CopyUtil.copyList(ebookslist, EbookResp.class);
+        List<EbookQueryResp> list = CopyUtil.copyList(ebookslist, EbookQueryResp.class);
 
-        PageResp<EbookResp> pageResp = new PageResp<>();
+        PageResp<EbookQueryResp> pageResp = new PageResp<>();
         pageResp.setTotal(pageinfo.getTotal());
         pageResp.setList(list);
 
         return pageResp;
     }
 
-    public List<EbookResp> all(EbookReq req){
+    /*
+     *查询所有
+     * */
+    public List<EbookQueryResp> all(EbookQueryReq req){
         //mybatis逆向的类
         EbookExample ebookExample = new EbookExample();
         //  .Criteria 可以看做一个where条件
@@ -79,8 +87,23 @@ public class EbookService {
 
         List<Ebook> ebookslist = ebookMapper.selectByExample(ebookExample);
         //使用CopyUtil进行列表复制
-        List<EbookResp> list = CopyUtil.copyList(ebookslist, EbookResp.class);
+        List<EbookQueryResp> list = CopyUtil.copyList(ebookslist, EbookQueryResp.class);
         LOG.info("返回数据",list);
         return list;
+    }
+
+    /*
+     *保存
+     * */
+    public  void save(EbookSaveReq req) {
+        //将请求参数变成实体对象
+        Ebook ebook = CopyUtil.copy(req,Ebook.class);
+        if(ObjectUtils.isEmpty(ebook.getId())){
+            //新增
+            ebookMapper.insert(ebook);
+        }else{
+            //更新
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
     }
 }

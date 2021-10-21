@@ -150,12 +150,24 @@ export default defineComponent({
     const ebook = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+    //点击保存后
     const handleModalOk = () => {
       modalLoading.value = true;
-      setTimeout(() => {
-        modalVisible.value = false;
-        modalLoading.value = false;
-      }, 2000);
+      axios.post("/ebook/save", ebook.value).then((response) => {
+        const data = response.data;
+        //是否修改成功
+        //data = commonResp
+        if(data.success){
+          modalVisible.value = false;
+          modalLoading.value = false;
+
+          //重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        }
+      });
     };
 
     /**
@@ -163,6 +175,8 @@ export default defineComponent({
      */
     const edit = (record : any) => {
       modalVisible.value = true;
+
+      //record表示一行一行的数据
       ebook.value = record;
     };
 
