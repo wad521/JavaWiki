@@ -70,4 +70,17 @@ public class EbookService {
 
         return pageResp;
     }
+
+    public List<EbookResp> all(EbookReq req){
+        //mybatis逆向的类
+        EbookExample ebookExample = new EbookExample();
+        //  .Criteria 可以看做一个where条件
+        EbookExample.Criteria criteria = ebookExample.createCriteria();
+
+        List<Ebook> ebookslist = ebookMapper.selectByExample(ebookExample);
+        //使用CopyUtil进行列表复制
+        List<EbookResp> list = CopyUtil.copyList(ebookslist, EbookResp.class);
+        LOG.info("返回数据",list);
+        return list;
+    }
 }

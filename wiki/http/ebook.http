@@ -1,5 +1,8 @@
 GET http://localhost:8880/ebook/list?page=1&size=2
 
+###
+
+GET http://localhost:8880/ebook/all
 
 ###
 
