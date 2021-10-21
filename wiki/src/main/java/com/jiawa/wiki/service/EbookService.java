@@ -7,6 +7,7 @@ import com.jiawa.wiki.domain.EbookExample;
 import com.jiawa.wiki.mapper.EbookMapper;
 import com.jiawa.wiki.req.EbookReq;
 import com.jiawa.wiki.resp.EbookResp;
+import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.util.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,7 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public List<EbookResp> list(EbookReq req){
-
-
-
+    public PageResp<EbookResp> list(EbookReq req){
 
         //mybatis逆向的类
         EbookExample ebookExample = new EbookExample();
@@ -40,7 +38,8 @@ public class EbookService {
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
-        PageHelper.startPage(1,3);
+        //通过EbookReq继承PageReq实现动态分页
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebookslist = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageinfo = new PageInfo<>(ebookslist);
@@ -64,6 +63,11 @@ public class EbookService {
 
         //使用CopyUtil进行列表复制
         List<EbookResp> list = CopyUtil.copyList(ebookslist, EbookResp.class);
-        return list;
+
+        PageResp<EbookResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageinfo.getTotal());
+        pageResp.setList(list);
+
+        return pageResp;
     }
 }
