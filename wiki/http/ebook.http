@@ -10,7 +10,6 @@ POST http://localhost:8880/ebook/save
 Content-Type: application/json
 
 {
-  "id": 12,
   "category1Id": 15,
   "name":"实例书籍http"
 }

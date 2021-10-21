@@ -98,6 +98,13 @@ public class EbookService {
     public  void save(EbookSaveReq req) {
         //将请求参数变成实体对象
         Ebook ebook = CopyUtil.copy(req,Ebook.class);
+//        System.out.println(ObjectUtils.isEmpty(ebook.getId()));
+//        System.out.println(ebookMapper.selectByPrimaryKey(ebook.getId()));
+//        if(ObjectUtils.isEmpty(ebook.getId()) == false && (ebookMapper.selectByPrimaryKey(ebook.getId()))==null){
+//            //新增
+//            ebookMapper.insert(ebook);
+//        }
+        //当该书籍的id不存在于数据库中时，新增；
         if(ObjectUtils.isEmpty(ebook.getId())){
             //新增
             ebookMapper.insert(ebook);
