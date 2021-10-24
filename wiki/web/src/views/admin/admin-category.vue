@@ -35,7 +35,7 @@
           @change="handleTableChange"
       >
         <template #cover="{ text: cover }">
-          <img v-if="cover" :src="cover" alt="avatar" />
+          <img v-if="cover" :src="cover" alt="avatar"/>
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
@@ -67,13 +67,13 @@
   >
     <a-form :model="category" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="名称">
-        <a-input v-model:value="category.name" />
+        <a-input v-model:value="category.name"/>
       </a-form-item>
       <a-form-item label="父分类">
-        <a-input v-model:value="category.parent" />
+        <a-input v-model:value="category.parent"/>
       </a-form-item>
       <a-form-item label="顺序">
-        <a-input v-model:value="category.sort" />
+        <a-input v-model:value="category.sort"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -81,9 +81,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
-import { message } from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
 
 export default defineComponent({
@@ -118,7 +118,7 @@ export default defineComponent({
       {
         title: 'Action',
         key: 'action',
-        slots: { customRender: 'action' }
+        slots: {customRender: 'action'}
       }
     ];
 
@@ -129,19 +129,19 @@ export default defineComponent({
       loading.value = true;
       axios.get("/category/list", {
         params: {
-          page:params.page,
-          size:params.size,
+          page: params.page,
+          size: params.size,
           name: param.value.name,
         }
       }).then((response) => {
         loading.value = false;
         const data = response.data;
-        if(data.success) {
+        if (data.success) {
           categorys.value = data.content.list;
           // 重置分页按钮
           pagination.value.current = params.page;
           pagination.value.total = data.content.total;
-        }else {
+        } else {
           message.error(data.message);
         }
       });
@@ -171,7 +171,7 @@ export default defineComponent({
         const data = response.data;
         //是否修改成功
         //data = commonResp
-        if(data.success){
+        if (data.success) {
           modalVisible.value = false;
 
 
@@ -180,7 +180,7 @@ export default defineComponent({
             page: pagination.value.current,
             size: pagination.value.pageSize,
           });
-        }else {
+        } else {
           message.error(data.message);
         }
       });
@@ -189,7 +189,7 @@ export default defineComponent({
     /**
      * 编辑
      */
-    const edit = (record : any) => {
+    const edit = (record: any) => {
       modalVisible.value = true;
 
       //record表示一行一行的数据
@@ -201,14 +201,14 @@ export default defineComponent({
      */
     const add = () => {
       modalVisible.value = true;
-      category.value={};
+      category.value = {};
     };
 
-    const handledelete = (id : number) => {
+    const handledelete = (id: number) => {
       //注意是delete请求
       axios.delete("/category/delete/" + id).then((response) => {
         const data = response.data;
-        if(data.success){
+        if (data.success) {
           //重新加载列表
           handleQuery({
             page: pagination.value.current,
@@ -225,7 +225,7 @@ export default defineComponent({
         //且params的属性定义在这里
         page: 1,
         size: pagination.value.pageSize,
-        yxl:10
+        yxl: 10
       });
     });
 

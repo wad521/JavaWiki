@@ -44,7 +44,9 @@ public class CategoryService {
         CategoryExample categoryExample = new CategoryExample();
         //  .Criteria 可以看做一个where条件
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
-
+        if (!ObjectUtils.isEmpty(req.getName())) {
+            criteria.andNameLike("%" + req.getName() + "%");
+        }
         //通过CategoryReq继承PageReq实现动态分页
         PageHelper.startPage(req.getPage(),req.getSize());
         List<Category> categoryslist = categoryMapper.selectByExample(categoryExample);
