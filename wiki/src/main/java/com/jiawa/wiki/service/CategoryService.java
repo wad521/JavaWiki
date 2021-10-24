@@ -42,8 +42,11 @@ public class CategoryService {
 
         //mybatis逆向的类
         CategoryExample categoryExample = new CategoryExample();
+
+        categoryExample.setOrderByClause("sort asc");
         //  .Criteria 可以看做一个where条件
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
+
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
@@ -83,16 +86,14 @@ public class CategoryService {
     /*
      *查询所有
      * */
-    public List<CategoryQueryResp> all(CategoryQueryReq req){
-        //mybatis逆向的类
+    public List<CategoryQueryResp> all() {
         CategoryExample categoryExample = new CategoryExample();
-        //  .Criteria 可以看做一个where条件
-        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
 
-        List<Category> categoryslist = categoryMapper.selectByExample(categoryExample);
-        //使用CopyUtil进行列表复制
-        List<CategoryQueryResp> list = CopyUtil.copyList(categoryslist, CategoryQueryResp.class);
-        LOG.info("返回数据",list);
+        // 列表复制
+        List<CategoryQueryResp> list = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+
         return list;
     }
 
