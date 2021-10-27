@@ -30,7 +30,7 @@
 <!--{{ ebooks2 }}-->
 <!--      </pre>-->
 
-      <a-list item-layout="vertical" size="large" :data-source="ebook" :grid="{ gutter: 20, column: 3 }">
+      <a-list item-layout="vertical" size="large" :data-source="ebooks" :grid="{ gutter: 20, column: 3 }">
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
             <template #actions>

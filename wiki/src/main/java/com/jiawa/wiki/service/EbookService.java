@@ -83,7 +83,7 @@ public class EbookService {
     /*
      *查询所有
      * */
-    public List<EbookQueryResp> all(EbookQueryReq req){
+    public List<EbookQueryResp> all(){
         //mybatis逆向的类
         EbookExample ebookExample = new EbookExample();
         //  .Criteria 可以看做一个where条件
